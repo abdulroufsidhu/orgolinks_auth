@@ -1,10 +1,14 @@
 package io.github.abdulroufsidhu.orgolink_auth.configs
 
+import jakarta.security.auth.message.config.AuthConfig
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.Customizer
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -24,7 +28,7 @@ class SecurityConfigs() {
             .csrf { customizer -> customizer.disable() }
             .authorizeHttpRequests { requests ->
                 requests
-                    .requestMatchers("/public/**", "/login", "/logout", "/register",)
+                    .requestMatchers("/public/**", "/login", "/logout", "/register")
                     .permitAll()
                     .anyRequest().authenticated()
             }
@@ -49,17 +53,8 @@ class SecurityConfigs() {
         return http.build()
     }
 
-
-//    @Bean
-//    fun userDetailsService(): UserDetailsService {
-//        val user: UserDetails =
-//            User.withDefaultPasswordEncoder()
-//                .username("abdul")
-//                .password("rauf")
-//                .roles("USER")
-//                .build()
-//        return InMemoryUserDetailsManager(user)
-//    }
+    @Bean
+    fun authenticationManager(authConfig: AuthenticationConfiguration) = authConfig.authenticationManager
 
     @Bean
     fun authenticationProvider(userDetailsService: UserDetailsService): AuthenticationProvider {
@@ -69,5 +64,5 @@ class SecurityConfigs() {
     }
 
     @Bean
-    fun passwordEncoder() = BCryptPasswordEncoder(4)
+    fun passwordEncoder() = BCryptPasswordEncoder(12)
 }
