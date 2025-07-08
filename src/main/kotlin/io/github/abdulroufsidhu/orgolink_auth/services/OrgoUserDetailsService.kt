@@ -17,6 +17,7 @@ class OrgoUserDetailsService(private val userRepo: UserRepo): UserDetailsService
             println("user not found")
             throw UsernameNotFoundException("No User found holding username $username")
         }
+        println("loaded user id is ${orgoUser.id?.toString()}")
         return OrgoUserPrincipal(orgoUser)
     }
 }
