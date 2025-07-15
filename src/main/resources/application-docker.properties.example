@@ -1,0 +1,72 @@
+# Docker profile configuration for Orgolink Auth Service
+spring.profiles.active=docker
+
+spring.application.name=orgolink-auth
+
+# Database Configuration for Docker
+spring.datasource.url=jdbc:postgresql://postgres:5432/orgolink_auth
+spring.datasource.username=orgolink
+spring.datasource.password=orgolink123
+spring.datasource.driver-class-name=org.postgresql.Driver
+
+# JPA Configuration
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=false
+spring.jpa.properties.hibernate.format_sql=false
+spring.jpa.properties.hibernate.jdbc.lob.non_contextual_creation=true
+
+# Connection Pool Configuration
+spring.datasource.hikari.maximum-pool-size=20
+spring.datasource.hikari.minimum-idle=5
+spring.datasource.hikari.connection-timeout=30000
+spring.datasource.hikari.idle-timeout=600000
+spring.datasource.hikari.max-lifetime=1800000
+
+# OpenAPI/Swagger Configuration
+springdoc.api-docs.path=/public/api-docs
+springdoc.swagger-ui.path=/public/swagger-ui.html
+springdoc.swagger-ui.enabled=true
+springdoc.api-docs.enabled=true
+
+# JWT Configuration (from environment variables)
+jwt.secret=${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
+jwt.expiration=${JWT_EXPIRATION:86400000}
+
+# Logging Configuration
+logging.level.io.github.abdulroufsidhu.orgolink_auth=INFO
+logging.level.org.springframework.security=INFO
+logging.level.org.springframework.web=INFO
+logging.level.org.hibernate.SQL=WARN
+logging.level.org.hibernate.type.descriptor.sql.BasicBinder=WARN
+logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %msg%n
+logging.pattern.file=%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+
+
+# Redis Configuration (if using Redis for caching)
+spring.redis.host=redis
+spring.redis.port=6379
+spring.redis.timeout=2000ms
+spring.redis.lettuce.pool.max-active=8
+spring.redis.lettuce.pool.max-idle=8
+spring.redis.lettuce.pool.min-idle=0
+
+# Cache Configuration
+spring.cache.type=redis
+spring.cache.redis.time-to-live=600000
+spring.cache.redis.cache-null-values=false
+
+# Security Configuration
+spring.security.oauth2.resourceserver.jwt.issuer-uri=https://localhost:8080
+
+# Jackson Configuration
+spring.jackson.serialization.write-dates-as-timestamps=false
+spring.jackson.time-zone=UTC
+
+# Multipart Configuration
+spring.servlet.multipart.max-file-size=10MB
+spring.servlet.multipart.max-request-size=10MB
+
+# Transaction Configuration
+spring.jpa.properties.hibernate.connection.autocommit=false
+spring.transaction.default-timeout=30
